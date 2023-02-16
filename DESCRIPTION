@@ -26,7 +26,8 @@ Depends:
   gridExtra,
   ggrepel,
   glmnet,
-  caret
+  caret,
+  Matrix
 RoxygenNote: 7.1.2
 Depends: 
     R (>= 2.10)
