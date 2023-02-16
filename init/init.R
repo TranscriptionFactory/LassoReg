@@ -57,13 +57,16 @@ for (file in list.files(dirs$scripts, full.names = T)) {
 # e.g data is [Y, X]
 df = read_csv(dpath)
 
+
+alphaValues = c(0.75, 1, 1.25)
+
 # test with 2-way
 results = list()
 file_id = ""
 if (cpath != "") {
   modules = getModules(df, dirs$cluster_filepath)
 
-  results = LASSO_Grid(modules$modulePA, alphaValues = c(0.75, 1.0, 1.25))
+  results = LASSO_Grid(modules$modulePA, alphaValues)
 
   # save these results
   # use regex to get the cluster file name wihtout the extension
@@ -76,17 +79,22 @@ if (cpath != "") {
 } else {
   # run normal lasso
   # run lasso/rf/svm
-
-  alphaValues = c(0.75, 1, 1.25)
-
   results = LASSO_Grid(df, alphaValues)
 
   file_id = str_flatten(alphaValues, collapse = "_")
 
   }
 
+chosen_vars_lambda = list()
+for (a in alphaValues) {
+  chosen_vars_lambda[[a]] = LassoReg::digestResults(results$gridResults, a, alphaValues)
+}
+
+
 saveRDS(results,
         file = paste0("results/", file_id, ".RDS"))
+
+saveRDS(chosen_vars_lambda, file = paste0("results/chosen_features.RDS"))
 
 # plot results
 plotResults(results, df)

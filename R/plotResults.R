@@ -38,10 +38,10 @@ digestResults = function(results) {
 }
 
 #' @export
-extractVars = function(results, lambda, multiLambda = T) {
+extractVars = function(results, lambda, multiLambda = T, allLambdas = c(lambda)) {
 
-  if (multiLambda) {
-    index = which(c(0.75, 1.0, 1.25) == as.numeric(lambda))
+  if (length(allLambdas) > 1) {
+    index = which(allLambdas == as.numeric(lambda))
   }
   else {
     index = 1
