@@ -38,16 +38,8 @@ if (!file.exists(dirs$data)) {
   stop("Directory does not exist. Default is 'data' in current directory", call.=FALSE)
 }
 
-############################
-# Source run scripts
-############################
-# first source imports
-source(paste0(dirs$scripts, 'imports.R'))
-
-# source imports and functions
-for (file in list.files(dirs$scripts, full.names = T)) {
-  source(file)
-}
+dir.create(paste0(getwd(), "/results/"), showWarnings = F, recursive = T)
+dir.create(paste0(getwd(), "/plots/"), showWarnings = F, recursive = T)
 
 ############################
 # Process data and run lasso
@@ -92,12 +84,12 @@ for (a in alphaValues) {
 
 
 saveRDS(results,
-        file = paste0("results/", file_id, ".RDS"))
+        file = paste0(getwd(), "/results/", file_id, ".RDS"))
 
-saveRDS(chosen_vars_lambda, file = paste0("results/chosen_features.RDS"))
+saveRDS(chosen_vars_lambda, file = paste0(getwd(), "/results/chosen_features.RDS"))
 
 # plot results
-plotResults(results, df)
+plotResults(results, df, paste0(getwd(), "/plots"))
 
 
 # done
