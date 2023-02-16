@@ -7,7 +7,7 @@ required_pkgs = c("tidyverse",
                   "tree", "gbm", "matrixStats", "cvAUC",
                   "pROC", "pls",
                   "ROCR", "BAS", "gmp", "matrixcalc",
-                   "LassoReg", "EssReg")
+                   "EssReg")
 
 for (p in required_pkgs) {
   installed = require(p, character.only = TRUE)
@@ -15,10 +15,10 @@ for (p in required_pkgs) {
     devtools::install_github("Hanxi-002/EssReg", force = FALSE,
                              dependencies = TRUE)
   }
-  else if (p == "LassoReg") {
-    devtools::install_github("TranscriptionFactory/LassoReg", force = FALSE,
-                             dependencies = TRUE)
-  }
+  # else if (p == "LassoReg") {
+  #   devtools::install_github("TranscriptionFactory/LassoReg", force = FALSE,
+  #                            dependencies = TRUE)
+  # }
   else if (installed == FALSE) {
       install.packages(p, dependencies = TRUE)
   }
