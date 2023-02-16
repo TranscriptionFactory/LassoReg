@@ -5,7 +5,7 @@ args = R.utils::commandArgs(asValues = TRUE, excludeReserved = TRUE, args = TRUE
 devtools::install_github("TranscriptionFactory/LassoReg", force = F,
                          dependencies = TRUE)
 
-
+library(LassoReg)
 ############################
 # Code for running arguments from command line
 ############################
