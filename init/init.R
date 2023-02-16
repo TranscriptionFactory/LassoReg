@@ -1,6 +1,10 @@
 #!/usr/bin/env Rscript
 args = R.utils::commandArgs(asValues = TRUE, excludeReserved = TRUE, args = TRUE)
 
+############################
+# Code for running arguments from command line
+############################
+
 # for -d and --datapath and -c and --clusterpath
 dpath_args = c("d", "datapath")
 cpath_args = c("c", "clusterpath")
@@ -18,22 +22,6 @@ if (length(intersect(dpath_args, names(args))) > 0) {
 }
 
 
-# usage: init.R ~/path/to/data where input data is only file
-
-############################
-# init.R
-# initialize working directory to data location and source
-# run scripts
-############################
-# set directories
-dirs = list(main = getwd(),
-            scripts = paste0(getwd(), '/src/'),
-                             data = paste0(getwd(), "/", dpath),
-            cluster_filepath = cpath)
-
-############################
-# Code for running arguments from command line
-############################
 if (!file.exists(dirs$data)) {
   stop("Directory does not exist. Default is 'data' in current directory", call.=FALSE)
 }
@@ -47,8 +35,20 @@ dir.create(paste0(getwd(), "/plots/"), showWarnings = F, recursive = T)
 
 #default is to have data saved as csv where column 1 is Y values
 # e.g data is [Y, X]
-df = read_csv(dpath)
 
+################################################################################
+# Set data to use
+################################################################################
+
+if (dpath == "data/exampledata") {
+  # no data path set, use example data
+  df = LassoReg::exampledata
+}
+else {
+  df = read_csv(dpath)
+
+}
+################################################################################
 
 alphaValues = c(0.75, 1, 1.25)
 
