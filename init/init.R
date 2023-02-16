@@ -66,18 +66,18 @@ if (cpath != "") {
 
   # save these results
   # use regex to get the cluster file name wihtout the extension
-  file_id = str_split_1(cpath,
+  file_id = stringr::str_split_1(cpath,
                         pattern = regex("\\.[a-zA-Z0-9]+$"))[1]
 
   # get last element (don't want full file paht)
-  file_id = tail(str_split_1(file_id, "/"), n = 1)
+  file_id = tail(stringr::str_split_1(file_id, "/"), n = 1)
 
 } else {
   # run normal lasso
   # run lasso/rf/svm
   results = LASSO_Grid(df, alphaValues)
 
-  file_id = str_flatten(alphaValues, collapse = "_")
+  file_id = stringr::str_flatten(alphaValues, collapse = "_")
 
   }
 
