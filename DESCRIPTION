@@ -27,3 +27,4 @@ Imports:
   EssReg,
   gridExtra,
   ggrepel
+RoxygenNote: 7.1.2
