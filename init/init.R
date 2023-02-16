@@ -27,7 +27,7 @@ if (length(intersect(dpath_args, names(args))) > 0) {
 }
 
 
-if (!file.exists(dirs$data)) {
+if (dpath != "data/exampledata" & !file.exists(dpath)) {
   stop("Directory does not exist. Default is 'data' in current directory", call.=FALSE)
 }
 
@@ -61,13 +61,13 @@ alphaValues = c(0.75, 1, 1.25)
 results = list()
 file_id = ""
 if (cpath != "") {
-  modules = getModules(df, dirs$cluster_filepath)
+  modules = getModules(df, cpath)
 
   results = LASSO_Grid(modules$modulePA, alphaValues)
 
   # save these results
   # use regex to get the cluster file name wihtout the extension
-  file_id = str_split_1(dirs$cluster_filepath,
+  file_id = str_split_1(cpath,
                         pattern = regex("\\.[a-zA-Z0-9]+$"))[1]
 
   # get last element (don't want full file paht)
