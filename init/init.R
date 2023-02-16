@@ -42,7 +42,7 @@ dir.create(paste0(getwd(), "/plots/"), showWarnings = F, recursive = T)
 
 if (dpath == "data/exampledata") {
   # no data path set, use example data
-  df = LassoReg::exampledata
+  df = data(exampledata)
 }
 else {
   df = read_csv(dpath)
