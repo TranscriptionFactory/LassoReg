@@ -10,7 +10,7 @@ processFile = function(filepath, df, fullModules = F) {
       break
     }
 
-    genes = str_split(line, "\t|\n")[[1]]
+    genes = stringr::str_split(line, "\t|\n")[[1]]
     allModules[length(allModules) + 1] = list(l = genes)
     gcount = gcount + 1
     genelist = c()
