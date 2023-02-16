@@ -113,14 +113,14 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
 
           y = train$Group
 
-          lasso_run <- cv.glmnet(x=X_train, y=y, alpha=1, nfolds = k,
+          lasso_run <- glmnet::cv.glmnet(x=X_train, y=y, alpha=1, nfolds = k,
                                  standardize = F)
 
 
           #run lasso on training data with best lambda
-          lasso_run_lmin <- glmnet(x=X_train, y=y, alpha= 1.0,
+          lasso_run_lmin <- glmnet::glmnet(x=X_train, y=y, alpha= 1.0,
                                    lambda = lasso_run$lambda.1se * gridValues[[entry]]$alpha)
-            c = coef(lasso_run_lmin)
+            c = stats::coef(lasso_run_lmin)
             inds = which(c!=0)
 
             #remove intercept from the list
