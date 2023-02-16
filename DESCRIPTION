@@ -24,7 +24,6 @@ Imports:
   BAS,
   gmp,
   matrixcalc,
-  EssReg,
   gridExtra,
   ggrepel
 RoxygenNote: 7.1.2
