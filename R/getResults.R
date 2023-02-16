@@ -98,7 +98,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
   downselected = df[, names(df) %in% vars$.]
   downselected$Group = df[, 1]
 
-  plsr_vals = plsr(Group ~ ., data = downselected, scale = T, validation = "CV")
+  plsr_vals = pls::plsr(Group ~ ., data = downselected, scale = T, validation = "CV")
 
   plsr_df = data.frame("Comp1" = plsr_vals$scores[,1], "Comp2" = plsr_vals$scores[,2],
                        "True" = factor(downselected$Group))

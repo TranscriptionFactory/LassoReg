@@ -21,7 +21,6 @@ Depends:
   pROC,
   pls,
   ROCR,
-  BAS,
   gmp,
   matrixcalc,
   gridExtra,
