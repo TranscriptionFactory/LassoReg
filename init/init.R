@@ -1,6 +1,11 @@
 #!/usr/bin/env Rscript
 args = R.utils::commandArgs(asValues = TRUE, excludeReserved = TRUE, args = TRUE)
 
+
+devtools::install_github("TranscriptionFactory/LassoReg", force = F,
+                         dependencies = TRUE)
+
+
 ############################
 # Code for running arguments from command line
 ############################
