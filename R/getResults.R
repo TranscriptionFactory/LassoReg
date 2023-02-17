@@ -109,13 +109,12 @@ plotResults = function(resultsdf, orig_df, outpath) {
   # 2 way
   chull_df = LassoReg::getChullPolygon(plsr_df)
 
-  plot_plsr = plsr_df %>%
-    ggplot2::ggplot(., aes(Comp1, Comp2, True)) + theme_bw() +
-    geom_polygon(data = data.frame(chull_df$l0),  aes(fill = True), alpha = 0.25) +
-    geom_polygon(data = data.frame(chull_df$l1), aes(fill = True), alpha = 0.25) +
-    geom_point(aes(color = True, fill = True), alpha = 1) +
-    labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = 'PLS-DA using only Lasso Features') +
-    theme(axis.text = element_text(size = 14))
+  plot_plsr = ggplot2::ggplot(plsr_df, aes(Comp1, Comp2, True)) + ggplot2::theme_bw() +
+    ggplot2::geom_polygon(data = data.frame(chull_df$l0),  aes(fill = True), alpha = 0.25) +
+    ggplot2::geom_polygon(data = data.frame(chull_df$l1), aes(fill = True), alpha = 0.25) +
+    ggplot2::geom_point(aes(color = True, fill = True), alpha = 1) +
+    ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = 'PLS-DA using only Lasso Features') +
+    ggplot2::theme(axis.text = element_text(size = 14))
 
 
   ggplot2::ggsave(paste0(outpath, "/plots/plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
@@ -124,8 +123,8 @@ plotResults = function(resultsdf, orig_df, outpath) {
   #########################################################################
   ##### showing true vs permuted auc by alpha for both svm and rf
   # rf
-  plot_auc = ggplot2::ggboxplot(auc_matrix %>%
-                              pivot_longer(cols = c("svm", "rf",
+  plot_auc = ggpubr::ggboxplot(auc_matrix %>%
+                              dplyr::pivot_longer(cols = c("svm", "rf",
                                                     "svm_permute", "rf_permute"),
                                            names_to = "auc_method", values_to = "auc"),
                             x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
@@ -133,7 +132,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
                             facet.by = "alpha", repel = T,
                             add = "point", add.params = list(size = 2), font.label = list(size = 20),
                             title = "SVM or Random Forest Classification (AUC)") +
-    stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
+    ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
                                                              c("rf", "rf_permute")))
   ggplot2::ggsave(paste0(outpath, "/plots/plot_auc_lasso.png"), plot = plot_auc, width = 12, height = 6)
 
@@ -148,7 +147,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
                             ylab = "Accuracy (Confusion matrix)",
                             add = "point", add.params = list(size = 2),
                             title = "SVM or Random Forest Classification (Confusion Matrix)") +
-    stat_compare_means(method = "t.test", comparisons = list(c("svm_cfm", "svm_cfm_permute"),
+    ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm_cfm", "svm_cfm_permute"),
                                                              c("rf_cfm", "rf_cfm_permute")))
   ggplot2::ggsave(paste0(outpath, "/plots/plot_cfm_lasso.png"), plot = plot_cfm, width = 14, height = 6)
 
