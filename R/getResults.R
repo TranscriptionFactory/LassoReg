@@ -45,7 +45,7 @@ extractVars = function(results) {
   for (index in results$lambdas) {
     vars_across_folds = c()
 
-    for (entry in 1:length(results)) {
+    for (entry in 1:length(results$gridResults)) {
       vars_across_folds = c(vars_across_folds,
                             results$gridResults[[entry]][[index]]$chosenFeats)
     }
