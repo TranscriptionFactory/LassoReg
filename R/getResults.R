@@ -50,7 +50,7 @@ extractVars = function(results) {
                             (results$gridResults[[entry]][[index]])$chosenFeats)
     }
 
-    allvars[[index]] = vars_across_folds
+    allvars[[length(allvars) + 1]] = vars_across_folds
   }
   return(allvars)
 }
