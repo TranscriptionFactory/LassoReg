@@ -16,6 +16,7 @@ Depends:
   stringr,
   readr,
   tibble,
+  magrittr,
   ggpubr,
   stats,
   randomForest,
