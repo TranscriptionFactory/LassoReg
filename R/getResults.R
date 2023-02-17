@@ -91,13 +91,13 @@ plotResults = function(resultsdf, orig_df, outpath) {
 
   ###### for LASSO ######
 
-  vars = extractVars(results, lambdas[1]) %>% table() %>%
+  vars = LassoReg::extractVars(results, lambdas[1]) %>% table() %>%
     as.data.frame() %>% dplyr::arrange(desc(Freq)) #%>% filter(Freq > 5)
 
   # use these to subset the original data
 
   downselected = df[, names(df) %in% vars$.]
-  downselected$Group = df[, 1]
+  downselected = cbind.data.frame(df$Group, downselected)
 
   plsr_vals = pls::plsr(Group ~ ., data = downselected, scale = T, validation = "CV")
 
@@ -137,7 +137,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
   ggplot2::ggsave(paste0(outpath, "/plots/plot_auc_lasso.png"), plot = plot_auc, width = 12, height = 6)
 
 
-  plot_cfm = ggplot2::ggboxplot(auc_matrix %>%
+  plot_cfm = ggpubr::ggboxplot(auc_matrix %>%
                               pivot_longer(cols = c("svm_cfm", "rf_cfm",
                                                     "svm_cfm_permute", "rf_cfm_permute"),
                                            names_to = "auc_method", values_to = "auc"),
