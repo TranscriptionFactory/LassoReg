@@ -5,18 +5,18 @@ calculateAUC = function(trueY, permutedY,
   # unique_levels = length(unique(trueY))
   if (length(unique(trueY)) == 2) {
 
-    auc_model = auc(trueY, append_model)
+    auc_model = glmnet:::auc(trueY, append_model)
 
     # auc_model_permute = auc(permutedY, append_model_permute)
-    auc_model_permute = auc(permutedY, append_model_permute)
+    auc_model_permute = glmnet:::auc(permutedY, append_model_permute)
 
   }
   else {
     # calculate multiclass auc
-    auc_model = auc(multiclass.roc(trueY, append_model))
+    auc_model = pROC::auc(pROC::multiclass.roc(trueY, append_model))
 
     # auc_model_permute = auc(multiclass.roc(permutedY, append_model_permute))
-    auc_model_permute = auc(multiclass.roc(permutedY, append_model_permute))
+    auc_model_permute = pROC::auc(pROC::multiclass.roc(permutedY, append_model_permute))
 
   }
 
