@@ -42,7 +42,7 @@ extractVars = function(results) {
 
   allvars = list()
 
-  for (index in results$lambdas) {
+  for (index in 1:length(results$lambdas)) {
     vars_across_folds = c()
 
     for (entry in 1:length(results$gridResults)) {
