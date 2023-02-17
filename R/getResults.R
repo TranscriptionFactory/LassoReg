@@ -87,9 +87,9 @@ plotResults = function(resultsdf, orig_df, outpath) {
 
   auc_matrix = digestResults(results)
 
-  outvars = LassoReg::extractVars(results)
+  outvars = LassoReg::extractVars(resultsdf)
   ###### for LASSO ######
-  for (l in 1:length(extractVars)) {
+  for (l in 1:length(outvars)) {
     vars = outvars[[l]] %>% table() %>%
       as.data.frame() %>% dplyr::arrange(desc(Freq)) #%>% filter(Freq > 5)
 
@@ -113,7 +113,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
       ggplot2::theme(axis.text = element_text(size = 14))
 
 
-    ggplot2::ggsave(paste0(outpath, "/plots/", outvars[l], "_plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
+    ggplot2::ggsave(paste0(outpath, "/plots/", l , "_plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
   }
 
   #########################################################################
