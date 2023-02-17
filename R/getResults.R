@@ -110,7 +110,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
   chull_df = LassoReg::getChullPolygon(plsr_df)
 
   plot_plsr = plsr_df %>%
-    ggplot2::ggplot(., aes(Comp1, Comp2)) + theme_bw() +
+    ggplot2::ggplot(., aes(Comp1, Comp2, True)) + theme_bw() +
     geom_polygon(data = data.frame(chull_df$l0),  aes(fill = True), alpha = 0.25) +
     geom_polygon(data = data.frame(chull_df$l1), aes(fill = True), alpha = 0.25) +
     geom_point(aes(color = True, fill = True), alpha = 1) +
