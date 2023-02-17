@@ -65,12 +65,12 @@ getChullPolygon = function(data) {
     # filter each group
     df = data %>% filter(True == group)
 
-    outliers1 = boxplot(df$Comp1, plot = F)$out
-    outliers2 = boxplot(df$Comp2, plot = F)$out
+    outliers1 = base::boxplot(df$Comp1, plot = F)$out
+    outliers2 = base::boxplot(df$Comp2, plot = F)$out
 
     chdf = df %>% filter(!Comp1 %in% c(outliers1) & !Comp2 %in% c(outliers2))
 
-    boundary = chull(chdf)
+    boundary = grDevices::chull(chdf)
     BumpX = chdf$Comp1[boundary] #+ 0.1*(df$Comp1[boundary] - mx)
     BumpY = chdf$Comp2[boundary] #+ 0.1*(df$Comp2[boundary] - my)
 
@@ -108,7 +108,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
   chull_df = getChullPolygon(plsr_df)
 
   plot_plsr = plsr_df %>%
-    ggplot(., aes(Comp1, Comp2)) + theme_bw() +
+    ggplot2::ggplot(., aes(Comp1, Comp2)) + theme_bw() +
     geom_polygon(data = data.frame(chull_df$l0),  aes(fill = True), alpha = 0.25) +
     geom_polygon(data = data.frame(chull_df$l1), aes(fill = True), alpha = 0.25) +
     geom_point(aes(color = True, fill = True), alpha = 1) +
@@ -116,13 +116,13 @@ plotResults = function(resultsdf, orig_df, outpath) {
     theme(axis.text = element_text(size = 14))
 
 
-  ggsave(paste0(outpath, "/plots/plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
+  ggplot2::ggsave(paste0(outpath, "/plots/plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
 
 
   #########################################################################
   ##### showing true vs permuted auc by alpha for both svm and rf
   # rf
-  plot_auc = ggboxplot(auc_matrix %>%
+  plot_auc = ggplot2::ggboxplot(auc_matrix %>%
                               pivot_longer(cols = c("svm", "rf",
                                                     "svm_permute", "rf_permute"),
                                            names_to = "auc_method", values_to = "auc"),
@@ -133,10 +133,10 @@ plotResults = function(resultsdf, orig_df, outpath) {
                             title = "SVM or Random Forest Classification (AUC)") +
     stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
                                                              c("rf", "rf_permute")))
-  ggsave(paste0(outpath, "/plots/plot_auc_lasso.png"), plot = plot_auc, width = 12, height = 6)
+  ggplot2::ggsave(paste0(outpath, "/plots/plot_auc_lasso.png"), plot = plot_auc, width = 12, height = 6)
 
 
-  plot_cfm = ggboxplot(auc_matrix %>%
+  plot_cfm = ggplot2::ggboxplot(auc_matrix %>%
                               pivot_longer(cols = c("svm_cfm", "rf_cfm",
                                                     "svm_cfm_permute", "rf_cfm_permute"),
                                            names_to = "auc_method", values_to = "auc"),
@@ -148,7 +148,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
                             title = "SVM or Random Forest Classification (Confusion Matrix)") +
     stat_compare_means(method = "t.test", comparisons = list(c("svm_cfm", "svm_cfm_permute"),
                                                              c("rf_cfm", "rf_cfm_permute")))
-  ggsave(paste0(outpath, "/plots/plot_cfm_lasso.png"), plot = plot_cfm, width = 14, height = 6)
+  ggplot2::ggsave(paste0(outpath, "/plots/plot_cfm_lasso.png"), plot = plot_cfm, width = 14, height = 6)
 
 }
 

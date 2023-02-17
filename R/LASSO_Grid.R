@@ -37,10 +37,10 @@ calculateAUC = function(trueY, permutedY,
   append_model = normbetween(append_model, unique_levels)
   append_model_permute = normbetween(append_model_permute, unique_levels)
 
-  cfm = confusionMatrix(as.factor(round(append_model)),
+  cfm = caret::confusionMatrix(as.factor(round(append_model)),
                         as.factor(trueY))
 
-  cfm_permute = confusionMatrix(as.factor(round(append_model_permute)),
+  cfm_permute = caret::confusionMatrix(as.factor(round(append_model_permute)),
                                 as.factor(permutedY))
 
   return(list(auc_model = auc_model, auc_model_permute = auc_model_permute,
@@ -50,7 +50,7 @@ calculateAUC = function(trueY, permutedY,
 
 #' @export
 LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)) {
-  retenv = new.env()
+  retenv = list()
   #############################################################
 
   # set first column to be Y (called Group here)

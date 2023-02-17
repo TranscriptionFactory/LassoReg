@@ -1,11 +1,11 @@
 
 processFile = function(filepath, df, fullModules = F) {
   results = list()
-  con = file(filepath, "r")
+  con = base::file(filepath, "r")
   gcount = 0
   allModules = list()
   while ( TRUE ) {
-    line = readLines(con, n = 1)
+    line = base::readLines(con, n = 1)
     if ( length(line) == 0 ) {
       break
     }
@@ -65,7 +65,7 @@ getModules = function(dfs, cluster_filepath) {
     for (val in 1:length(unique(Y))) {
       grp_means[val,] = colSums(subset(subDF, Y == unique(Y)[val]))/(length(which(subDF$Y == unique(Y)[val])))
 
-      grp_sds[val,] = apply(subset(subDF, Y == unique(Y)[val]), 2, sd)
+      grp_sds[val,] = apply(base::subset(subDF, Y == unique(Y)[val]), 2, sd)
     }
 
     grp_means = grp_means[, -1]
@@ -125,7 +125,7 @@ getModules = function(dfs, cluster_filepath) {
   modulePA <- cbind.data.frame(Group, modulePA)
 
 
-  retenv = new.env()
+  retenv = list()
   retenv$modulePA = modulePA
   retenv$modules = modules
   return(retenv)
