@@ -201,5 +201,6 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
   }
 
   retenv$gridResults = gridResults
+  retenv$lambdas = alphaValues
   return(retenv)
 }

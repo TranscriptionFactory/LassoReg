@@ -38,7 +38,7 @@ digestResults = function(results) {
 }
 
 #' @export
-extractVars = function(results, lambda, multiLambda = T, allLambdas = c(lambda)) {
+extractVars = function(results, lambda, allLambdas = c(lambda)) {
 
   if (length(allLambdas) > 1) {
     index = which(allLambdas == as.numeric(lambda))
@@ -84,13 +84,14 @@ getChullPolygon = function(data) {
 
 plotResults = function(resultsdf, orig_df, outpath) {
   results = resultsdf$gridResults
+  lambdas = resultsdf$lambdas
   df = orig_df
 
   auc_matrix = digestResults(results)
 
   ###### for LASSO ######
 
-  vars = extractVars(results, 1.0, T) %>% table() %>%
+  vars = extractVars(results, lambdas[1]) %>% table() %>%
     as.data.frame() %>% arrange(desc(Freq)) #%>% filter(Freq > 5)
 
   # use these to subset the original data
