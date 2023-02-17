@@ -92,7 +92,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
   ###### for LASSO ######
 
   vars = extractVars(results, lambdas[1]) %>% table() %>%
-    as.data.frame() %>% arrange(desc(Freq)) #%>% filter(Freq > 5)
+    as.data.frame() %>% dplyr::arrange(desc(Freq)) #%>% filter(Freq > 5)
 
   # use these to subset the original data
 
