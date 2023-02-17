@@ -65,8 +65,8 @@ getChullPolygon = function(data) {
     # filter each group
     df = data %>% dplyr::filter(True == group)
 
-    outliers1 = base::boxplot(df$Comp1, plot = F)$out
-    outliers2 = base::boxplot(df$Comp2, plot = F)$out
+    outliers1 = graphics::boxplot(df$Comp1, plot = F)$out
+    outliers2 = graphics::boxplot(df$Comp2, plot = F)$out
 
     chdf = df %>% dplyr::filter(!Comp1 %in% c(outliers1) & !Comp2 %in% c(outliers2))
 
