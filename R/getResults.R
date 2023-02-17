@@ -63,12 +63,12 @@ getChullPolygon = function(data) {
   results = list()
   for (group in levels(data$True)) {
     # filter each group
-    df = data %>% filter(True == group)
+    df = data %>% dplyr::filter(True == group)
 
     outliers1 = base::boxplot(df$Comp1, plot = F)$out
     outliers2 = base::boxplot(df$Comp2, plot = F)$out
 
-    chdf = df %>% filter(!Comp1 %in% c(outliers1) & !Comp2 %in% c(outliers2))
+    chdf = df %>% dplyr::filter(!Comp1 %in% c(outliers1) & !Comp2 %in% c(outliers2))
 
     boundary = grDevices::chull(chdf)
     BumpX = chdf$Comp1[boundary] #+ 0.1*(df$Comp1[boundary] - mx)
@@ -103,11 +103,11 @@ plotResults = function(resultsdf, orig_df, outpath) {
   plsr_vals = pls::plsr(Group ~ ., data = downselected, scale = T, validation = "CV")
 
   plsr_df = data.frame("Comp1" = plsr_vals$scores[,1], "Comp2" = plsr_vals$scores[,2],
-                       "True" = factor(downselected$Group))
+                       "True" = as.factor(downselected$Group))
 
 
   # 2 way
-  chull_df = getChullPolygon(plsr_df)
+  chull_df = LassoReg::getChullPolygon(plsr_df)
 
   plot_plsr = plsr_df %>%
     ggplot2::ggplot(., aes(Comp1, Comp2)) + theme_bw() +
