@@ -61,6 +61,7 @@ extractVars = function(results, lambda, allLambdas = c(lambda)) {
 #' @export
 getChullPolygon = function(data) {
   results = list()
+  results = data.frame()
   for (group in levels(data$True)) {
     # filter each group
     df = data %>% dplyr::filter(True == group)
@@ -74,8 +75,8 @@ getChullPolygon = function(data) {
     BumpX = chdf$Comp1[boundary] #+ 0.1*(df$Comp1[boundary] - mx)
     BumpY = chdf$Comp2[boundary] #+ 0.1*(df$Comp2[boundary] - my)
 
-    results[[paste0("l",group)]] = list(Comp1 = BumpX, Comp2 = BumpY, True = chdf$True[boundary])
-
+    # results[[paste0("l",group)]] = list(Comp1 = BumpX, Comp2 = BumpY, True = chdf$True[boundary])
+    results = rbind(results, list(Comp1 = BumpX, Comp2 = BumpY, True = chdf$True[boundary]))
   }
   return(results)
 }
@@ -105,13 +106,10 @@ plotResults = function(resultsdf, orig_df, outpath) {
   plsr_df = data.frame("Comp1" = plsr_vals$scores[,1], "Comp2" = plsr_vals$scores[,2],
                        "True" = as.factor(downselected$Group))
 
-
-  # 2 way
   chull_df = LassoReg::getChullPolygon(plsr_df)
 
   plot_plsr = ggplot2::ggplot(plsr_df, aes(Comp1, Comp2, True)) + ggplot2::theme_bw() +
-    ggplot2::geom_polygon(data = data.frame(chull_df$l0),  aes(fill = True), alpha = 0.25) +
-    ggplot2::geom_polygon(data = data.frame(chull_df$l1), aes(fill = True), alpha = 0.25) +
+    ggplot2::geom_polygon(data = data.frame(chull_df),  aes(x = Comp1, y = Comp2, fill = True), alpha = 0.25, inherit.aes = F) +
     ggplot2::geom_point(aes(color = True, fill = True), alpha = 1) +
     ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = 'PLS-DA using only Lasso Features') +
     ggplot2::theme(axis.text = element_text(size = 14))
@@ -124,7 +122,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
   ##### showing true vs permuted auc by alpha for both svm and rf
   # rf
   plot_auc = ggpubr::ggboxplot(auc_matrix %>%
-                              dplyr::pivot_longer(cols = c("svm", "rf",
+                              tidyr::pivot_longer(cols = c("svm", "rf",
                                                     "svm_permute", "rf_permute"),
                                            names_to = "auc_method", values_to = "auc"),
                             x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
@@ -134,11 +132,11 @@ plotResults = function(resultsdf, orig_df, outpath) {
                             title = "SVM or Random Forest Classification (AUC)") +
     ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
                                                              c("rf", "rf_permute")))
-  ggplot2::ggsave(paste0(outpath, "/plots/plot_auc_lasso.png"), plot = plot_auc, width = 12, height = 6)
+  ggplot2::ggsave(paste0(outpath, "/plots/plot_auc_lasso.png"), plot = plot_auc, width = 14, height = 6)
 
 
   plot_cfm = ggpubr::ggboxplot(auc_matrix %>%
-                              pivot_longer(cols = c("svm_cfm", "rf_cfm",
+                             tidyr::pivot_longer(cols = c("svm_cfm", "rf_cfm",
                                                     "svm_cfm_permute", "rf_cfm_permute"),
                                            names_to = "auc_method", values_to = "auc"),
                             x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
@@ -149,11 +147,17 @@ plotResults = function(resultsdf, orig_df, outpath) {
                             title = "SVM or Random Forest Classification (Confusion Matrix)") +
     ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm_cfm", "svm_cfm_permute"),
                                                              c("rf_cfm", "rf_cfm_permute")))
-  ggplot2::ggsave(paste0(outpath, "/plots/plot_cfm_lasso.png"), plot = plot_cfm, width = 14, height = 6)
+  ggplot2::ggsave(paste0(outpath, "/plots/plot_cfm_lasso.png"), plot = plot_cfm, width = 16, height = 6)
 
 }
 
+resultsdf = data.frame()
+for(l in names(chull_df)){
+
+    resultsdf = rbind(resultsdf, chull_df[[l]])
 
 
+
+  }
 
 
