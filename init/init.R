@@ -49,7 +49,7 @@ if (dpath == "data/exampledata") {
   # no data path set, use example data
   df = LassoReg::exampledata
 } else {
-  df = read_csv(dpath)
+  df = readr::read_csv(dpath)
 
 }
 ################################################################################

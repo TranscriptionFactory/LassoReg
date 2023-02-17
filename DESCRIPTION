@@ -10,7 +10,12 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Depends:
-  tidyverse,
+  ggplot2,
+  dplyr,
+  tidyr,
+  stringr,
+  readr,
+  tibble,
   ggpubr,
   stats,
   randomForest,

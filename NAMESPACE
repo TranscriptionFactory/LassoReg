@@ -1,7 +1,12 @@
 exportPattern("^[[:alpha:]]+")
 
 
-import("tidyverse")
+import("ggplot2")
+import("readr")
+import("dplyr")
+import("tidyr")
+import("tibble")
+import("stringr")
 import("ggrepel")
 import("gridExtra")
 import("ggpubr")
@@ -16,4 +21,3 @@ import("glmnet")
 import("caret")
 import("stats")
 import("Matrix")
-import("stringr")
