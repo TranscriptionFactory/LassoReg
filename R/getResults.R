@@ -98,6 +98,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
 
   downselected = df[, names(df) %in% vars$.]
   downselected = cbind.data.frame(df$Group, downselected)
+  names(downselected)[1] = "Group"
 
   plsr_vals = pls::plsr(Group ~ ., data = downselected, scale = T, validation = "CV")
 

@@ -1,9 +1,10 @@
 #!/usr/bin/env Rscript
 args = R.utils::commandArgs(asValues = TRUE, excludeReserved = TRUE, args = TRUE)
 
+library(usethis)
 library(devtools)
-devtools::install_github("TranscriptionFactory/LassoReg", force = F,
-                         dependencies = TRUE, quiet = TRUE)
+devtools::install_github("TranscriptionFactory/LassoReg", force = T,
+                         dependencies = F, quiet = F)
 
 library(LassoReg, attach.required = TRUE)
 ############################
@@ -54,43 +55,45 @@ if (dpath == "data/exampledata") {
 }
 ################################################################################
 
-alphaValues = c(0.75, 1, 1.25)
+alphaValues = c(0.5)
 
 # test with 2-way
 results = list()
 file_id = ""
 if (cpath != "") {
-  modules = getModules(df, cpath)
+  modules = LassoReg::getModules(df, cpath)
 
-  results = LASSO_Grid(modules$modulePA, alphaValues)
+  results = LassoReg::LASSO_Grid(modules$modulePA, alphaValues)
 
   # save these results
   # use regex to get the cluster file name wihtout the extension
   file_id = stringr::str_split_1(cpath,
-                        pattern = regex("\\.[a-zA-Z0-9]+$"))[1]
+                                 pattern = regex("\\.[a-zA-Z0-9]+$"))[1]
 
   # get last element (don't want full file paht)
   file_id = tail(stringr::str_split_1(file_id, "/"), n = 1)
 
+  saveRDS(modules, file = paste0(getwd(), "/results/modules.RDS"))
+
 } else {
   # run normal lasso
   # run lasso/rf/svm
-  results = LASSO_Grid(df, alphaValues)
+  results = LassoReg::LASSO_Grid(df, alphaValues)
 
   file_id = stringr::str_flatten(alphaValues, collapse = "_")
 
-  }
-
-chosen_vars_lambda = list()
-for (a in alphaValues) {
-  chosen_vars_lambda[[a]] = LassoReg::digestResults(results$gridResults, a, alphaValues)
 }
+
+# chosen_vars_lambda = list()
+# for (a in alphaValues) {
+#   chosen_vars_lambda[[a]] = LassoReg::extractVars(results$gridResults, a, alphaValues)
+# }
 
 
 saveRDS(results,
         file = paste0(getwd(), "/results/", file_id, ".RDS"))
 
-saveRDS(chosen_vars_lambda, file = paste0(getwd(), "/results/chosen_features.RDS"))
+# saveRDS(chosen_vars_lambda, file = paste0(getwd(), "/results/chosen_features.RDS"))
 
 # plot results
 plotResults(results, df, paste0(getwd(), "/plots"))
