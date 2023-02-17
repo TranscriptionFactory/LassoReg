@@ -58,7 +58,6 @@ extractVars = function(results) {
 
 #' @export
 getChullPolygon = function(data) {
-  results = list()
   results = data.frame()
   for (group in levels(data$True)) {
     # filter each group
@@ -148,14 +147,3 @@ plotResults = function(resultsdf, orig_df, outpath) {
   ggplot2::ggsave(paste0(outpath, "/plots/plot_cfm_lasso.png"), plot = plot_cfm, width = 16, height = 6)
 
 }
-
-resultsdf = data.frame()
-for(l in names(chull_df)){
-
-    resultsdf = rbind(resultsdf, chull_df[[l]])
-
-
-
-  }
-
-
