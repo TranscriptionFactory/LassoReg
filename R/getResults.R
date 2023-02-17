@@ -87,33 +87,34 @@ plotResults = function(resultsdf, orig_df, outpath) {
 
   auc_matrix = digestResults(results)
 
+  outvars = LassoReg::extractVars(results)
   ###### for LASSO ######
+  for (l in 1:length(extractVars)) {
+    vars = outvars[[l]] %>% table() %>%
+      as.data.frame() %>% dplyr::arrange(desc(Freq)) #%>% filter(Freq > 5)
 
-  vars = LassoReg::extractVars(results)[[1]] %>% table() %>%
-    as.data.frame() %>% dplyr::arrange(desc(Freq)) #%>% filter(Freq > 5)
+    # use these to subset the original data
 
-  # use these to subset the original data
+    downselected = df[, names(df) %in% vars$.]
+    downselected = cbind.data.frame(df$Group, downselected)
+    names(downselected)[1] = "Group"
 
-  downselected = df[, names(df) %in% vars$.]
-  downselected = cbind.data.frame(df$Group, downselected)
-  names(downselected)[1] = "Group"
+    plsr_vals = pls::plsr(Group ~ ., data = downselected, scale = T, validation = "CV")
 
-  plsr_vals = pls::plsr(Group ~ ., data = downselected, scale = T, validation = "CV")
+    plsr_df = data.frame("Comp1" = plsr_vals$scores[,1], "Comp2" = plsr_vals$scores[,2],
+                         "True" = as.factor(downselected$Group))
 
-  plsr_df = data.frame("Comp1" = plsr_vals$scores[,1], "Comp2" = plsr_vals$scores[,2],
-                       "True" = as.factor(downselected$Group))
+    chull_df = LassoReg::getChullPolygon(plsr_df)
 
-  chull_df = LassoReg::getChullPolygon(plsr_df)
-
-  plot_plsr = ggplot2::ggplot(plsr_df, aes(Comp1, Comp2, True)) + ggplot2::theme_bw() +
-    ggplot2::geom_polygon(data = data.frame(chull_df),  aes(x = Comp1, y = Comp2, fill = True), alpha = 0.25, inherit.aes = F) +
-    ggplot2::geom_point(aes(color = True, fill = True), alpha = 1) +
-    ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = 'PLS-DA using only Lasso Features') +
-    ggplot2::theme(axis.text = element_text(size = 14))
+    plot_plsr = ggplot2::ggplot(plsr_df, aes(Comp1, Comp2, True)) + ggplot2::theme_bw() +
+      ggplot2::geom_polygon(data = data.frame(chull_df),  aes(x = Comp1, y = Comp2, fill = True), alpha = 0.25, inherit.aes = F) +
+      ggplot2::geom_point(aes(color = True, fill = True), alpha = 1) +
+      ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = 'PLS-DA using only Lasso Features') +
+      ggplot2::theme(axis.text = element_text(size = 14))
 
 
-  ggplot2::ggsave(paste0(outpath, "/plots/plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
-
+    ggplot2::ggsave(paste0(outpath, "/plots/", outvars[l], "_plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
+  }
 
   #########################################################################
   ##### showing true vs permuted auc by alpha for both svm and rf
