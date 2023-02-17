@@ -6,7 +6,7 @@ library(devtools)
 devtools::install_github("TranscriptionFactory/LassoReg", force = T,
                          dependencies = F, quiet = F)
 
-library(LassoReg, attach.required = TRUE)
+library(LassoReg, attach.required = F)
 ############################
 # Code for running arguments from command line
 ############################
@@ -84,10 +84,8 @@ if (cpath != "") {
 
 }
 
-# chosen_vars_lambda = list()
-# for (a in alphaValues) {
-#   chosen_vars_lambda[[a]] = LassoReg::extractVars(results$gridResults, a, alphaValues)
-# }
+results$lambdas = alphaValues
+chosen_vars_lambda = LassoReg::extractVars(results)
 
 
 saveRDS(results,

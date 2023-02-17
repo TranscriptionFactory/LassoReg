@@ -38,23 +38,20 @@ digestResults = function(results) {
 }
 
 #' @export
-extractVars = function(results, lambda, allLambdas = c(lambda)) {
+extractVars = function(results) {
 
-  if (length(allLambdas) > 1) {
-    index = which(allLambdas == as.numeric(lambda))
-  }
-  else {
-    index = 1
-  }
+  allvars = list()
 
-  vars_across_folds = c()
+  for (index in results$lambdas) {
+    vars_across_folds = c()
 
-  for (entry in 1:length(results)) {
-    vars_across_folds = c(vars_across_folds,
-                          results[[entry]][[index]]$chosenFeats)
-  }
+    for (entry in 1:length(results)) {
+      vars_across_folds = c(vars_across_folds,
+                            results$gridResults[[entry]][[index]]$chosenFeats)
+    }
 
-  return(vars_across_folds)
+    allvars[[index]] = vars_across_folds
+  return(allvars)
 }
 
 
@@ -92,7 +89,7 @@ plotResults = function(resultsdf, orig_df, outpath) {
 
   ###### for LASSO ######
 
-  vars = LassoReg::extractVars(results, lambdas[1]) %>% table() %>%
+  vars = LassoReg::extractVars(results)[[1]] %>% table() %>%
     as.data.frame() %>% dplyr::arrange(desc(Freq)) #%>% filter(Freq > 5)
 
   # use these to subset the original data
