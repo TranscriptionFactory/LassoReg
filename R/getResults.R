@@ -51,6 +51,7 @@ extractVars = function(results) {
     }
 
     allvars[[index]] = vars_across_folds
+  }
   return(allvars)
 }
 

@@ -87,7 +87,6 @@ if (cpath != "") {
 results$lambdas = alphaValues
 chosen_vars_lambda = LassoReg::extractVars(results)
 
-
 saveRDS(results,
         file = paste0(getwd(), "/results/", file_id, ".RDS"))
 
