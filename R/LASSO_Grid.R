@@ -144,8 +144,8 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
 
             }
 #
-#             newTrain = droplevels(newTrain)
-#             newTest = droplevels(newTest)
+            newTrain$Y = droplevels(newTrain$Y)
+            newTest$Y = droplevels(newTest$Y)
 
             svmfit = e1071::svm(y = newTrain$Y, x=as.matrix(newTrain[,-1]),
                          kernel="linear", cost=10, scale=T, na.action = na.omit)
