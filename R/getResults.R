@@ -50,7 +50,9 @@ extractVars = function(results) {
                             (results$gridResults[[entry]][[index]])$chosenFeats)
     }
 
-    allvars[[length(allvars) + 1]] = vars_across_folds
+    allvars[[length(allvars) + 1]] = list(chosen_vars = unique(vars_across_folds),
+                                          chosen_vars_freq = data.frame(vars_across_folds)
+                                          %>% dplyr::arrange(desc(Freq)))
   }
   return(allvars)
 }

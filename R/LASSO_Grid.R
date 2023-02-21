@@ -2,8 +2,8 @@
 calculateAUC = function(trueY, permutedY,
                         append_model, append_model_permute,
                         unique_levels = 2) {
-  # unique_levels = length(unique(trueY))
-  if (length(unique(trueY)) == 2) {
+
+    if (length(unique(trueY)) == 2) {
 
     auc_model = glmnet:::auc(trueY, append_model)
 
@@ -149,7 +149,7 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
               gridValues[[entry]]$permuteY = append(gridValues[[entry]]$permuteY, newTest$Y)
 
             }
-# #
+
             newTrain = droplevels(newTrain)
             newTest = droplevels(newTest)
 
