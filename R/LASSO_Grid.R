@@ -144,15 +144,15 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
 
             }
 #
-            newTrain$Y = droplevels(newTrain$Y)
-            newTest$Y = droplevels(newTest$Y)
+            newTrain = droplevels(newTrain)
+            newTest = droplevels(newTest)
 
-            svmfit = e1071::svm(y = newTrain$Y, x=as.matrix(newTrain[,-1]),
+            svmfit = e1071::svm(y = as.factor(newTrain$Y), x=as.matrix(newTrain[,-1]),
                          kernel="linear", cost=10, scale=T, na.action = na.omit)
             yhat.SVM = predict(svmfit, newdata = as.matrix(newTest[, -1]), type = "response")
 
               # random forest
-            RFfit <- randomForest::randomForest(y = newTrain$Y, x=as.matrix(newTrain[,-1]),
+            RFfit <- randomForest::randomForest(y = as.factor(newTrain$Y), x=as.matrix(newTrain[,-1]),
                                   importance=TRUE, ntree = 100)
 
             yhat.RF = predict(RFfit, newdata = as.matrix(newTest[, -1]), type = "response")
