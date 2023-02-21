@@ -163,7 +163,6 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
 
             yhat.RF = predict(RFfit, newdata = as.matrix(newTest[, -1]), type = "response")
 
-
             # store yhat in appropriate location depending on mode
             if (n_run == 1) {
               gridValues[[entry]]$chosenFeats = variables[[entry]]
