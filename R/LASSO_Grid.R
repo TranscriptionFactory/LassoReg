@@ -114,7 +114,7 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
           y = train$Group
 
           lasso_run <- glmnet::cv.glmnet(x=X_train, y=y, alpha=1, nfolds = k,
-                                 standardize = F)
+                                 standardize = T)
 
 
           #run lasso on training data with best lambda
@@ -123,8 +123,9 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
           c = stats::coef(lasso_run_lmin)
           inds = which(c!=0)
 
-          if (length(inds == 0)) {
-            cat("No variables selected")
+
+          if (length(inds) == 0) {
+            cat("No variables selected\n")
             break
           }
 
@@ -148,9 +149,9 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
               gridValues[[entry]]$permuteY = append(gridValues[[entry]]$permuteY, newTest$Y)
 
             }
-#
-            newTrain = droplevels(newTrain)
-            newTest = droplevels(newTest)
+# #
+#             newTrain = droplevels(newTrain)
+#             newTest = droplevels(newTest)
 
             svmfit = e1071::svm(y = as.factor(newTrain$Y), x=as.matrix(newTrain[,-1]),
                          kernel="linear", cost=10, scale=T, na.action = na.omit)
