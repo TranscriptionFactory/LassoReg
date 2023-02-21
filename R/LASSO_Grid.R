@@ -123,6 +123,11 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
           c = stats::coef(lasso_run_lmin)
           inds = which(c!=0)
 
+          if (length(inds == 0)) {
+            cat("No variables selected")
+            break
+          }
+
             #remove intercept from the list
             variables[[entry]] <- tail(row.names(c)[inds], -1)
 
