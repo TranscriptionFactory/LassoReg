@@ -1,0 +1,78 @@
+---
+title: "Simple-Run"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simple-Run}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r load_packages, message = FALSE, warning = FALSE}
+
+library(tidyverse)
+library(usethis)
+library(devtools)
+devtools::install_github("TranscriptionFactory/LassoReg", force = T,
+                         dependencies = F, quiet = T)
+
+library(LassoReg, attach.required = T)
+library(Matrix)
+
+```
+
+
+
+## Load data
+```{r load_data, include = TRUE}
+df = as.data.frame(LassoReg::example_data)
+
+alphaValues = c(0.75)
+
+# usually use
+#alphaValues = c(0.75, 1.0, 1.25)
+```
+
+
+## Run Lasso
+```{r run_lasso, message = FALSE, warning = FALSE}
+
+results = LassoReg::LASSO_Grid(df, alphaValues = alphaValues)
+
+```
+
+## Analyze features
+
+```{r analyze_features, include = TRUE, echo = TRUE}
+chosen_vars = LassoReg::extractVars(results)
+
+head(chosen_vars)
+```
+
+## Analyse Results
+
+```{r analyze_results, include = TRUE}
+
+plots = LassoReg::plotResults(results, df)
+```
+
+
+```{r, fig.width = 6, fight.height = 8}
+plot(plots[[1]])
+```
+
+```{r, fig.width = 10, fight.height = 6}
+plot(plots[[2]])
+```
+
+```{r, fig.width =10, fight.height = 6}
+plot(plots[[3]])
+```
