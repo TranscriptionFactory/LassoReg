@@ -125,8 +125,8 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
 
 
           if (length(inds) == 0) {
-            cat("No variables selected\n")
-            break
+            print("No variables selected\n")
+            next
           }
 
             #remove intercept from the list
