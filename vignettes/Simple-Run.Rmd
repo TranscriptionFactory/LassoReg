@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(usethis)
 library(devtools)
-devtools::install_github("TranscriptionFactory/LassoReg", force = T,
+devtools::install_github("TranscriptionFactory/LassoReg", force = F,
                          dependencies = F, quiet = T)
 
 library(LassoReg, attach.required = T)
@@ -29,9 +29,22 @@ library(Matrix)
 
 ```
 
-
-
 ## Load data
+First note: alpha here refers to a multiplier on the lambda chosen through cross validation.
+
+Second note: some values of alpha may be too stringent for your data and result in no 
+features being selected and a resulting error in calculating the svm. If this happens,
+try using a smaller value. 
+You can test multiple values for alpha during a run.
+Here's some ideas for values to try (I usually increase/decrease in increments of 0.25)
+1. 0.75, 1.0, 1.25
+2. 0.5, 0.75, 1.0
+
+If you're getting good classification, use larger values
+
+In general, 
+# Larger alpha/lambda values = fewer features selected
+and vice versa
 ```{r load_data, include = TRUE}
 df = as.data.frame(LassoReg::example_data)
 
@@ -41,8 +54,8 @@ alphaValues = c(0.75)
 #alphaValues = c(0.75, 1.0, 1.25)
 ```
 
-
 ## Run Lasso
+
 ```{r run_lasso, message = FALSE, warning = FALSE}
 
 results = LassoReg::LASSO_Grid(df, alphaValues = alphaValues)
@@ -62,17 +75,18 @@ head(chosen_vars)
 ```{r analyze_results, include = TRUE}
 
 plots = LassoReg::plotResults(results, df)
+
+# multiple plots get returned
 ```
 
-
-```{r, fig.width = 6, fight.height = 8}
-plot(plots[[1]])
+```{r, fig.width = 8, fig.height = 4}
+plots[[1]]
 ```
 
-```{r, fig.width = 10, fight.height = 6}
-plot(plots[[2]])
+```{r, fig.width = 8, fig.height = 5}
+plots[[2]]
 ```
 
-```{r, fig.width =10, fight.height = 6}
-plot(plots[[3]])
+```{r, fig.width = 8, fig.height = 5}
+plots[[3]]
 ```
