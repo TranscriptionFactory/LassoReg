@@ -51,8 +51,9 @@ extractVars = function(results) {
     }
 
     allvars[[length(allvars) + 1]] = list(chosen_vars = unique(vars_across_folds),
-                                          chosen_vars_freq = data.frame(vars_across_folds)
-                                          %>% dplyr::arrange(dplyr::desc(Freq)))
+                                          chosen_vars_freq = table() %>%
+                                            as.data.frame() %>%
+                                          dplyr::arrange(dplyr::desc(Freq)))
   }
   return(allvars)
 }
