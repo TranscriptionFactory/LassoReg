@@ -92,9 +92,10 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
   outvars = LassoReg::extractVars(resultsdf)
   ###### for LASSO ######
   for (l in 1:length(outvars)) {
-    vars = outvars[[l]]$chosen_vars_freq
-    names(vars)[1] = "."
-    # use these to subset the original data
+    vars = outvars[[l]]$chosen_vars %>% table() %>%
+    as.data.frame() %>% dplyr::arrange(dplyr::desc(Freq))
+
+        # use these to subset the original data
     downselected = df[, names(df) %in% vars$.]
     downselected = cbind.data.frame(df$Group, downselected)
     names(downselected)[1] = "Group"
