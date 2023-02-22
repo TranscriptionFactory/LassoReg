@@ -52,7 +52,7 @@ extractVars = function(results) {
 
     allvars[[length(allvars) + 1]] = list(chosen_vars = unique(vars_across_folds),
                                           chosen_vars_freq = data.frame(vars_across_folds)
-                                          %>% dplyr::arrange(desc(Freq)))
+                                          %>% dplyr::arrange(dplyr::desc(Freq)))
   }
   return(allvars)
 }
@@ -93,7 +93,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
   ###### for LASSO ######
   for (l in 1:length(outvars)) {
     vars = outvars[[l]] %>% table() %>%
-      as.data.frame() %>% dplyr::arrange(desc(Freq)) #%>% filter(Freq > 5)
+      as.data.frame() %>% dplyr::arrange(dplyr::desc(Freq)) #%>% filter(Freq > 5)
 
     # use these to subset the original data
 
