@@ -93,7 +93,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
   ###### for LASSO ######
   for (l in 1:length(outvars)) {
     vars = outvars[[l]]$chosen_vars_freq
-
+    names(vars)[1] = "."
     # use these to subset the original data
     downselected = df[, names(df) %in% vars$.]
     downselected = cbind.data.frame(df$Group, downselected)
