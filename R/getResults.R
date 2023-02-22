@@ -51,7 +51,8 @@ extractVars = function(results) {
     }
 
     allvars[[length(allvars) + 1]] = list(chosen_vars = unique(vars_across_folds),
-                                          chosen_vars_freq = table() %>%
+                                          chosen_vars_freq = vars_across_folds %>%
+                                            table() %>%
                                             as.data.frame() %>%
                                           dplyr::arrange(dplyr::desc(Freq)))
   }
@@ -75,7 +76,6 @@ getChullPolygon = function(data) {
     BumpX = chdf$Comp1[boundary] #+ 0.1*(df$Comp1[boundary] - mx)
     BumpY = chdf$Comp2[boundary] #+ 0.1*(df$Comp2[boundary] - my)
 
-    # results[[paste0("l",group)]] = list(Comp1 = BumpX, Comp2 = BumpY, True = chdf$True[boundary])
     results = rbind(results, list(Comp1 = BumpX, Comp2 = BumpY, True = chdf$True[boundary]))
   }
   return(results)
