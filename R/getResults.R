@@ -82,7 +82,7 @@ getChullPolygon = function(data) {
 
 
 
-plotResults = function(resultsdf, orig_df, outpath) {
+plotResults = function(resultsdf, orig_df, outpath = "") {
   results = resultsdf$gridResults
   lambdas = resultsdf$lambdas
   df = orig_df
@@ -115,7 +115,6 @@ plotResults = function(resultsdf, orig_df, outpath) {
       ggplot2::theme(axis.text = element_text(size = 14))
 
 
-    ggplot2::ggsave(paste0(outpath, "/plots/", l , "_plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
   }
 
   #########################################################################
@@ -132,8 +131,6 @@ plotResults = function(resultsdf, orig_df, outpath) {
                             title = "SVM or Random Forest Classification (AUC)") +
     ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
                                                              c("rf", "rf_permute")))
-  ggplot2::ggsave(paste0(outpath, "/plots/plot_auc_lasso.png"), plot = plot_auc, width = 14, height = 6)
-
 
   plot_cfm = ggpubr::ggboxplot(auc_matrix %>%
                              tidyr::pivot_longer(cols = c("svm_cfm", "rf_cfm",
@@ -147,6 +144,15 @@ plotResults = function(resultsdf, orig_df, outpath) {
                             title = "SVM or Random Forest Classification (Confusion Matrix)") +
     ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm_cfm", "svm_cfm_permute"),
                                                              c("rf_cfm", "rf_cfm_permute")))
-  ggplot2::ggsave(paste0(outpath, "/plots/plot_cfm_lasso.png"), plot = plot_cfm, width = 16, height = 6)
 
+  if (outpath != "") {
+    ggplot2::ggsave(paste0(outpath, "/", l , "_plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
+
+    ggplot2::ggsave(paste0(outpath, "/plot_auc_lasso.png"), plot = plot_auc, width = 14, height = 6)
+
+    ggplot2::ggsave(paste0(outpath, "/plot_cfm_lasso.png"), plot = plot_cfm, width = 14, height = 6)
+  }
+  else {
+    return(list("plsr_plot" = plot_plsr, "auc_plot" = plot_auc, "cfm_plot" = plot_cfm))
+  }
 }
