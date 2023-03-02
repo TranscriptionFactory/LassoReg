@@ -20,28 +20,15 @@ calculateAUC = function(trueY, permutedY,
 
   }
 
-    # normalize append models
-  normbetween = function(x, unique_levels){
-    # the number of levels is the range we want
+  trueY = factor(trueY)
+  permutedY = factor(permutedY)
 
-    if (unique_levels <= 2) {
-      return( 1 / (1 + exp(-x)))
-    }
-    else {
-      norm_factor = 1/(unique_levels - 1)
+  # these might break if the classes need to be rounded or round incorrectly
+  cfm = caret::confusionMatrix(as.factor(round(append_model), levels = levels(trueY)),
+                                         trueY)
 
-      return( (1 / (norm_factor + exp(-x))) + 1 )
-    }
-  }
-
-  append_model = normbetween(append_model, unique_levels)
-  append_model_permute = normbetween(append_model_permute, unique_levels)
-
-  cfm = caret::confusionMatrix(as.factor(round(append_model)),
-                        as.factor(trueY))
-
-  cfm_permute = caret::confusionMatrix(as.factor(round(append_model_permute)),
-                                as.factor(permutedY))
+  cfm_permute = caret::confusionMatrix(as.factor(round(append_model_permute), levels = levels(permutedY)),
+                                permutedY)
 
   return(list(auc_model = auc_model, auc_model_permute = auc_model_permute,
               cfm = cfm, cfm_permute = cfm_permute))
