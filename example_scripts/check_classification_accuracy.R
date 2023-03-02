@@ -5,12 +5,8 @@
 library(caret)
 library(glmnet)
 library(tidyverse)
-
+library(ggpubr)
 # results = LassoReg::LASSO_Grid(modulePA, alphaValues = alphaValues)
-
-
-true_confusionMatrices = list()
-permuted_confusionMatrices = list()
 
 plottingData = data.frame()
 
