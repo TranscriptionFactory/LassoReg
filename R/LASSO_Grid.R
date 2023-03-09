@@ -106,7 +106,7 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
 
           #run lasso on training data with best lambda
           lasso_run_lmin <- glmnet::glmnet(x=X_train, y=y, alpha= 1.0,
-                                   lambda = lasso_run$lambda.1se * gridValues[[entry]]$alpha)
+                                   lambda = lasso_run$lambda.min * gridValues[[entry]]$alpha)
           c = stats::coef(lasso_run_lmin)
           inds = which(c!=0)
 
