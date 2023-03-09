@@ -25,11 +25,8 @@ cleanData <- function(xdata, ydata, mode = 1,
     }
     
     
-    if (scale_zeroes_directly) {
-      xrows = xdata[which(apply(xdata, 1, function(x) x) == 0), ]
-      xcols = xdata[, apply(xdata, 2, function(x) which(x == 0))]
-      xdata = [xrows, xcols] = xdata[xrows, xcols] = 0.0001
-      
+    if (scale_zeroes_directly > 0) {
+      xdata = xdata + 0.0001
     }
     # remove zero SD too
     zero_sd <- which(apply(xdata, 2, sd) == 0)
