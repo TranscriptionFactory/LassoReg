@@ -85,11 +85,14 @@ getModules = function(dfs, cluster_filepath) {
         # get value of Y for sample k
         y_k = Y[k]
 
-        j_score = ((rep(tempSubDF[k, j], times = length(grp_means[,j])) - grp_means[, j]))^2 / grp_means[, j]
+#         j_score = ((rep(tempSubDF[k, j], times = length(grp_means[,j])) - grp_means[, j]))^2 / grp_means[, j]
 
+        
         # get abs values
 
-        m[j] = sum(j_score)
+#         m[j] = sum(j_score)
+        
+        m[j] = log1p( (tempSubDF[k, j]^2) / prod(grp_means[, j]) )
 
         SN[j] <- sign(m[j])
 
