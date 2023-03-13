@@ -91,8 +91,9 @@ getModules = function(dfs, cluster_filepath) {
         # get abs values
 
 #         m[j] = sum(j_score)
-        
-        m[j] = log1p( (tempSubDF[k, j]^2) / prod(grp_means[, j]) )
+          m[j] = log1p( ((tempSubDF[k, j] - grp_means[which(unique(Y) == y_k), j])^2) / (prod(grp_means[, j]) + 1) )
+
+#         m[j] = log1p( (tempSubDF[k, j]^2) / prod(grp_means[, j]) )
 
         SN[j] <- sign(m[j])
 
