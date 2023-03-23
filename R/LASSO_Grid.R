@@ -24,11 +24,11 @@ calculateAUC = function(trueY, permutedY,
   permutedY = factor(permutedY)
 
   # these might break if the classes need to be rounded or round incorrectly
-  cfm = caret::confusionMatrix(factor(round(append_model), levels = levels(trueY)),
-                                         trueY)
+  cfm = caret::confusionMatrix(table(factor(round(append_model), levels = levels(trueY)),
+                                         trueY))
 
-  cfm_permute = caret::confusionMatrix(factor(round(append_model_permute), levels = levels(permutedY)),
-                                permutedY)
+  cfm_permute = caret::confusionMatrix(table(factor(round(append_model_permute), levels = levels(permutedY)),
+                                permutedY))
 
   return(list(auc_model = auc_model, auc_model_permute = auc_model_permute,
               cfm = cfm, cfm_permute = cfm_permute))
