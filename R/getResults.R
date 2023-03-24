@@ -150,7 +150,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
 
   if (outpath != "") {
     
-    for (p in 1:length(plsr_plotlist) {
+    for (p in 1:length(plsr_plotlist)) {
         ggplot2::ggsave(paste0(outpath, "/", p , "_plot_plsr_lasso.png"), plsr_plotlist[[p]], height = 7, width = 7)
     }
 
