@@ -91,6 +91,8 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
 
   outvars = LassoReg::extractVars(resultsdf)
   ###### for LASSO ######
+  
+  plsr_plotlist = list()
   for (l in 1:length(outvars)) {
     vars = outvars[[l]]$chosen_vars %>% table() %>%
     as.data.frame() %>% dplyr::arrange(dplyr::desc(Freq))
@@ -110,8 +112,10 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
     plot_plsr = ggplot2::ggplot(plsr_df, aes(Comp1, Comp2, True)) + ggplot2::theme_bw() +
       ggplot2::geom_polygon(data = data.frame(chull_df),  aes(x = Comp1, y = Comp2, fill = True), alpha = 0.25, inherit.aes = F) +
       ggplot2::geom_point(aes(color = True, fill = True), alpha = 1) +
-      ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = 'PLS-DA using only Lasso Features') +
+      ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = paste0('PLS-DA using only Lasso Features, lambda = ', lambdas[l]) +
       ggplot2::theme(axis.text = element_text(size = 14))
+    
+    plsr_plotlist[[l]] = plot_plsr
 
 
   }
@@ -145,7 +149,10 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
                                                              c("rf_cfm", "rf_cfm_permute")))
 
   if (outpath != "") {
-    ggplot2::ggsave(paste0(outpath, "/", l , "_plot_plsr_lasso.png"), plot_plsr, height = 7, width = 7)
+    
+    for (p in 1:length(plsr_plotlist) {
+        ggplot2::ggsave(paste0(outpath, "/", p , "_plot_plsr_lasso.png"), plsr_plotlist[[p]], height = 7, width = 7)
+    }
 
     ggplot2::ggsave(paste0(outpath, "/plot_auc_lasso.png"), plot = plot_auc, width = 14, height = 6)
 
