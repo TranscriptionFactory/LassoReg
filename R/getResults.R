@@ -129,7 +129,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
                                            names_to = "auc_method", values_to = "auc"),
                             x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
                             order = c("svm", "svm_permute", "rf", "rf_permute"),
-                            facet.by = "alpha", repel = T,
+                            facet.by = "alpha", scales = "free", repel = T,
                             add = "point", add.params = list(size = 2), font.label = list(size = 20),
                             title = "SVM or Random Forest Classification (AUC)") +
     ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
@@ -141,7 +141,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
                                            names_to = "auc_method", values_to = "auc"),
                             x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
                             order = c("svm_cfm", "svm_cfm_permute", "rf_cfm", "rf_cfm_permute"),
-                            facet.by = "alpha", repel = T, xlab = "Method",
+                            facet.by = "alpha", scales = "free", repel = T, xlab = "Method",
                             ylab = "Accuracy (Confusion matrix)",
                             add = "point", add.params = list(size = 2),
                             title = "SVM or Random Forest Classification (Confusion Matrix)") +
@@ -154,10 +154,10 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
         ggplot2::ggsave(paste0(outpath, "/", p , "_plot_plsr_lasso.png"), plsr_plotlist[[p]], height = 7, width = 7)
     }
 
-    ggplot2::ggsave(paste0(outpath, "/plot_auc_lasso.png"), plot = plot_auc, width = 14, height = 6)
+    ggplot2::ggsave(paste0(outpath, "/plot_auc_lasso.png"), plot = plot_auc, width = length(lambdas)*5, height = 6)
 
-    ggplot2::ggsave(paste0(outpath, "/plot_cfm_lasso.png"), plot = plot_cfm, width = 14, height = 6)
+    ggplot2::ggsave(paste0(outpath, "/plot_cfm_lasso.png"), plot = plot_cfm, width = length(lambdas)*5, height = 6)
   } else {
-    return(list("plsr_plot" = plot_plsr, "auc_plot" = plot_auc, "cfm_plot" = plot_cfm))
+    return(list("plsr_plot" = plsr_plotlist, "auc_plot" = plot_auc, "cfm_plot" = plot_cfm))
   }
 }
