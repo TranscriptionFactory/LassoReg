@@ -157,8 +157,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
     ggplot2::ggsave(paste0(outpath, "/plot_auc_lasso.png"), plot = plot_auc, width = 14, height = 6)
 
     ggplot2::ggsave(paste0(outpath, "/plot_cfm_lasso.png"), plot = plot_cfm, width = 14, height = 6)
-  }
-  else {
+  } else {
     return(list("plsr_plot" = plot_plsr, "auc_plot" = plot_auc, "cfm_plot" = plot_cfm))
   }
 }
