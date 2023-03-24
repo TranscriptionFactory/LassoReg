@@ -112,10 +112,10 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
     plot_plsr = ggplot2::ggplot(plsr_df, aes(Comp1, Comp2, True)) + ggplot2::theme_bw() +
       ggplot2::geom_polygon(data = data.frame(chull_df),  aes(x = Comp1, y = Comp2, fill = True), alpha = 0.25, inherit.aes = F) +
       ggplot2::geom_point(aes(color = True, fill = True), alpha = 1) +
-      ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = paste0('PLS-DA using only Lasso Features, lambda = ', lambdas[l]) +
+      ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = paste0('PLS-DA using only Lasso Features, lambda = ', lambdas[l])) +
       ggplot2::theme(axis.text = element_text(size = 14))
     
-    plsr_plotlist = append(plsr_plotlist, plot_plsr)
+    plsr_plotlist[[l]] = plot_plsr
 
 
   }
