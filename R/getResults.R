@@ -115,7 +115,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
       ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = paste0('PLS-DA using only Lasso Features, lambda = ', lambdas[l]) +
       ggplot2::theme(axis.text = element_text(size = 14))
     
-    plsr_plotlist[[l]] = plot_plsr
+    plsr_plotlist = append(plsr_plotlist, plot_plsr)
 
 
   }
