@@ -81,9 +81,11 @@ getChullPolygon = function(data) {
 }
 
 
-
-plotResults = function(resultsdf, orig_df, outpath = "") {
+#' @export
+plotResults = function(resultsdf, outpath = "") {
   results = resultsdf$gridResults
+
+  df = resultsdf$lasso_input
   lambdas = resultsdf$lambdas
   df = orig_df
 
@@ -91,7 +93,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
 
   outvars = LassoReg::extractVars(resultsdf)
   ###### for LASSO ######
-  
+
   plsr_plotlist = list()
   for (l in 1:length(outvars)) {
     vars = outvars[[l]]$chosen_vars %>% table() %>%
@@ -114,7 +116,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
       ggplot2::geom_point(aes(color = True, fill = True), alpha = 1) +
       ggplot2::labs(x = 'PLS-DA Comp1', y = 'PLS-DA Comp2', title = paste0('PLS-DA using only Lasso Features, lambda = ', lambdas[l])) +
       ggplot2::theme(axis.text = element_text(size = 14))
-    
+
     plsr_plotlist[[l]] = plot_plsr
 
 
@@ -149,7 +151,7 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
                                                              c("rf_cfm", "rf_cfm_permute")))
 
   if (outpath != "") {
-    
+
     for (p in 1:length(plsr_plotlist)) {
         ggplot2::ggsave(paste0(outpath, "/", p , "_plot_plsr_lasso.png"), plsr_plotlist[[p]], height = 7, width = 7)
     }
@@ -161,3 +163,22 @@ plotResults = function(resultsdf, orig_df, outpath = "") {
     return(list("plsr_plot" = plsr_plotlist, "auc_plot" = plot_auc, "cfm_plot" = plot_cfm))
   }
 }
+
+#' @export
+getNetworkNames = function(network_results) {
+
+  modnames = list()
+
+  if (!is.null(network_results$lasso_input$modules$results)) {
+    mod_defs = network_results$lasso_input$modules$results
+  } else {
+    return()
+  }
+
+  for (v in 1:length(network_results$vars)) {
+    vs = network_results$vars[[v]]$chosen_vars
+    modnames[[v]] = lapply(vs, function(x) mod_defs[[as.numeric(x)]])
+  }
+  return(modnames)
+}
+

@@ -36,14 +36,14 @@ calculateAUC = function(trueY, permutedY,
 
 
 #' @export
-LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)) {
+LASSO_Grid = function(fulldata, lambdaValues = c(1.0)) {
   retenv = list()
   #############################################################
 
   # set first column to be Y (called Group here)
   names(fulldata)[1] = "Group"
 
-  alphaValues = as.numeric(alphaValues)
+  lambdaValues = as.numeric(lambdaValues)
 
   # number of folds to create
   k = 10
@@ -57,7 +57,7 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
   for(runCount in 1:numRuns) {
 
     gridValues = list()
-    for (val in alphaValues) {
+    for (val in lambdaValues) {
       gridValues[[length(gridValues) + 1]] = list(alpha = val)
     }
 
@@ -193,6 +193,10 @@ LASSO_Grid = function(fulldata, export = F, foldfreq = 0.6, alphaValues = c(1.0)
   }
 
   retenv$gridResults = gridResults
-  retenv$lambdas = alphaValues
+  retenv$lambdas = lambdaValues
+  retenv$lasso_input = fulldata
+
+  # extractVars here
+  retenv$vars = LassoReg::extractVars(retenv)
   return(retenv)
 }

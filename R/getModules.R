@@ -1,18 +1,38 @@
 
-processFile = function(filepath, df, fullModules = F) {
+processFile = function(cluster_input, df, fullModules = F, filepath = NULL) {
   results = list()
-  con = base::file(filepath, "r")
-  gcount = 0
-  allModules = list()
-  while ( TRUE ) {
-    line = base::readLines(con, n = 1)
-    if ( length(line) == 0 ) {
-      break
-    }
 
-    genes = stringr::str_split(line, "\t|\n")[[1]]
-    allModules[length(allModules) + 1] = list(l = genes)
-    gcount = gcount + 1
+  allModules = list()
+  gcount = 0
+  # read from filepath
+  if (!is.null(filepath)) {
+    con = base::file(filepath, "r")
+    while ( TRUE ) {
+      line = base::readLines(con, n = 1)
+      if ( length(line) == 0 ) {
+        break
+      }
+      genes = stringr::str_split(line, "\t|\n")[[1]]
+
+      allModules[length(allModules) + 1] = list(l = genes)
+      gcount = gcount + 1
+    }
+    close(con)
+
+  } else if (!is.null(cluster_input)) {
+      # read through clusters dataframe
+      for (i in 1:length(cluster_input)) {
+        allModules[length(allModules) + 1] = list( stringr::str_c(cluster_input[1, ]))
+      }
+  } else {
+      # somethings wrong
+      return()
+  }
+
+  # iterate through all modules and create the modules based on our tolerance
+
+  for (i in 1:length(allModules)) {
+    genes = allModules[[i]]
     genelist = c()
     for (g in genes) {
       if (g %in% names(df[, -1])) {
@@ -30,7 +50,6 @@ processFile = function(filepath, df, fullModules = F) {
     }
   }
 
-  close(con)
   final_results = list(results = results, allModules = allModules)
   return(final_results)
 }
@@ -87,7 +106,7 @@ getModules = function(dfs, cluster_filepath) {
 
 #         j_score = ((rep(tempSubDF[k, j], times = length(grp_means[,j])) - grp_means[, j]))^2 / grp_means[, j]
 
-        
+
         # get abs values
 
 #         m[j] = sum(j_score)
