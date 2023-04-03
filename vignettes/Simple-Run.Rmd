@@ -107,7 +107,8 @@ chosen_vars = results$vars$chosen_vars
 The names of the network modules 
 ```{r analyze_nm, include = TRUE, echo = TRUE}
 
-chosen_vars = results$vars$chosen_vars
+network_names = LassoReg::getNetworkNames(results)
+print(network_names)
 
 ```
 

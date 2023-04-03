@@ -87,7 +87,6 @@ plotResults = function(resultsdf, outpath = "") {
 
   df = resultsdf$lasso_input
   lambdas = resultsdf$lambdas
-  df = orig_df
 
   auc_matrix = digestResults(results)
 
