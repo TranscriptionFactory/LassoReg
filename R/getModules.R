@@ -1,4 +1,5 @@
 
+#' @export
 processFile = function(cluster_input, df, fullModules = F, filepath = NULL) {
   results = list()
 
