@@ -21,7 +21,7 @@ processFile = function(cluster_input, df, fullModules = F, filepath = NULL) {
 
   } else if (!is.null(cluster_input)) {
       # read through clusters dataframe
-      for (i in 1:length(cluster_input)) {
+      for (i in 1:nrow(cluster_input)) {
         allModules[length(allModules) + 1] = list( stringr::str_c(cluster_input[i, ]))
       }
   } else {
