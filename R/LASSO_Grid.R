@@ -20,8 +20,8 @@ calculateAUC = function(trueY, permutedY,
 
   }
 
-#   trueY = factor(trueY)
-#   permutedY = factor(permutedY)
+  trueY = factor(trueY)
+  permutedY = factor(permutedY)
   cfm = caret::confusionMatrix(table(factor(round(append_model)),
                                          trueY))
 
