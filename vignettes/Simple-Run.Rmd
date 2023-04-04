@@ -37,21 +37,22 @@ library(Matrix)
 gene features to the getModules function.
 Input is clustered ppi data generated with ClustalOne. Included in the package are inputs that should
 work fine for many use cases. There are two cluster inputs that vary based on the average size of the clusters they contain. If you wish to cluster de-duplicated ppi data, the input passed to ClustalOne can be found as well.
-```{r create_clusters, include = TRUE}
+The getModules function returns a list with the Lasso input matrix stored "modulePA" list and the module results (both the modules that were chosen and the full list of modules). 
+
+### important: if using network modules, pass the modulePA to the lasso function
+```{r create_clusters, include = TRUE, eval = F}
 
 # get average size 6 clusters
 cluster_input_avgSize6 = LassoReg::clustered_ppi_avgSize6
 
-# uncomment to get average size 8 clusters
-# cluster_input_avgSize8 = LassoReg::clustered_ppi_avgSize8
+cluster_input_avgSize8 = LassoReg::clustered_ppi_avgSize8
 
-# uncomment to load all_ppis
-# all_ppis = LassoReg::all_ppis
+all_ppis = LassoReg::all_ppis
 
 
 # To generate the network modules, call getModules
 # uncomment and replace df with your dataframe name to use
-# modules = LassoReg::getModules(df, cluster_input_avgSize6)
+modules = LassoReg::getModules(df, cluster_input_avgSize6)
 
 ```
 
@@ -63,9 +64,8 @@ Second note: some values of lambda may be too stringent for your data and result
 features being selected and a resulting error in calculating the svm. If this happens,
 try using a smaller value. 
 You can test multiple values for lambda during a run.
-Here's some ideas for values to try (I usually increase/decrease in increments of 0.25) \\
-  1. 0.75, 1.0, 1.25
-  2. 0.5, 0.75, 1.0
+Here's some ideas for values to try (I usually increase/decrease in increments of 0.05) \\
+  1. 0.95, 1.0, 1.05
 
 If you're getting good classification, use larger values to reduce the number of features chosen.
 
@@ -78,8 +78,6 @@ df = as.data.frame(LassoReg::example_data)
 
 lambdaValues = c(0.75)
 
-# usually use
-#lambdaValues = c(0.95, 1.0, 1.05)
 ```
 
 ## Run Lasso 
@@ -88,6 +86,15 @@ LASSO_GRID will return:
   - lambdas: the lambdaValues tested
   - lasso_input: the dataframe used
   - vars: the chosen variables
+
+### Lasso with network modules
+```{r run_lasso_nm, message = FALSE, warning = FALSE, eval = F}
+# not run
+results = LassoReg::LASSO_Grid(df$modulePA, lambdaValues = lambdaValues)
+
+```
+
+### Lasso with individual features:
 ```{r run_lasso, message = FALSE, warning = FALSE}
 
 results = LassoReg::LASSO_Grid(df, lambdaValues = lambdaValues)
@@ -95,7 +102,6 @@ results = LassoReg::LASSO_Grid(df, lambdaValues = lambdaValues)
 names(results)
 
 ```
-
 ## Analyze features
 The chosen features can be found like this:
 ```{r analyze_features, include = TRUE, echo = TRUE}
@@ -105,15 +111,16 @@ chosen_vars = results$vars$chosen_vars
 ```
 
 ## Analyze Network Modules (omit this step if not using network modules)
-The names of the network modules 
+The names of the network modules; these don't work for the example data because the module information is not included.
 ```{r analyze_nm, include = TRUE, echo = TRUE}
 
 network_names = LassoReg::getNetworkNames(results)
-print(network_names)
+
+#print(network_names)
 
 ```
 
-## Analyse Results
+## Analyze Results
 ```{r analyze_results, include = TRUE}
 
 plots = LassoReg::plotResults(results)
@@ -121,6 +128,14 @@ plots = LassoReg::plotResults(results)
 # multiple plots get returned.
 # One PLS-DA plot is returned for each lambda value
 ```
+
+### You can save the plots by calling the function like this instead:
+```{r save_results, include = TRUE, eval=F}
+
+plots = LassoReg::plotResults(results, outpath = "<path>")
+
+```
+
 
 ```{r, fig.width = 8, fig.height = 4}
 plots[[1]]
