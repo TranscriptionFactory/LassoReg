@@ -16,6 +16,41 @@ knitr::opts_chunk$set(
 )
 ```
 
+### Example script
+```{r example_script, message = FALSE, warning = FALSE, eval = F}
+library(tidyverse)
+library(usethis)
+library(devtools)
+# run this everytime - it will only install if there are updates to the package.
+# if you are getting errors, try using 'force = T'
+devtools::install_github("TranscriptionFactory/LassoReg", force = F,
+                         dependencies = F, quiet = T)
+library(LassoReg, attach.required = T)
+library(Matrix)
+
+
+# load your data so gene names are in the columns and y-values prepended and in the first column
+df = load_data
+
+# get average size 6 clusters
+cluster_input_avgSize6 = LassoReg::clustered_ppi_avgSize6
+
+# get network modules
+modules = LassoReg::getModules(dataframe, cluster_input_avgSize6)
+
+# pass modulePA from modules list
+results = LassoReg::LASSO_Grid(modules$modulePA, lambdaValues = c(0.95, 1.0, 1.05))
+
+# get list of the genes in the network modules chosen by lasso
+network_names = LassoReg::getNetworkNames(results)
+
+# view plots (omit the outpath argument to get the plots returned)
+plots = LassoReg::plotResults(results, outpath = "<path>")
+
+```
+
+### Steps explained
+
 ```{r load_packages, message = FALSE, warning = FALSE}
 
 library(tidyverse)
