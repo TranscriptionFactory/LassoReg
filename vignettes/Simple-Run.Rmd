@@ -42,17 +42,18 @@ The getModules function returns a list with the Lasso input matrix stored "modul
 ### important: if using network modules, pass the modulePA to the lasso function
 ```{r create_clusters, include = TRUE, eval = F}
 
+# get binary ppi data to use for clustering
+all_ppis = LassoReg::all_ppis
+
 # get average size 6 clusters
 cluster_input_avgSize6 = LassoReg::clustered_ppi_avgSize6
 
+# get average size 8 clusters
 cluster_input_avgSize8 = LassoReg::clustered_ppi_avgSize8
-
-all_ppis = LassoReg::all_ppis
 
 
 # To generate the network modules, call getModules
-# uncomment and replace df with your dataframe name to use
-modules = LassoReg::getModules(df, cluster_input_avgSize6)
+modules = LassoReg::getModules(dataframe, cluster_input_avgSize6)
 
 ```
 
@@ -113,10 +114,8 @@ chosen_vars = results$vars$chosen_vars
 ## Analyze Network Modules (omit this step if not using network modules)
 The names of the network modules; these don't work for the example data because the module information is not included.
 ```{r analyze_nm, include = TRUE, echo = TRUE}
-
+# not run
 network_names = LassoReg::getNetworkNames(results)
-
-#print(network_names)
 
 ```
 
