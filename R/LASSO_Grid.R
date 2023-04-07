@@ -40,7 +40,7 @@ calculateAUC = function(trueY, permutedY,
 
 
 #' @export
-LASSO_Grid = function(fulldata, lambdaValues = c(1.0)) {
+LASSO_Grid = function(fulldata, lambdaValues = c(1.0), numFolds = 10) {
   retenv = list()
   #############################################################
 
@@ -50,7 +50,7 @@ LASSO_Grid = function(fulldata, lambdaValues = c(1.0)) {
   lambdaValues = as.numeric(lambdaValues)
 
   # number of folds to create
-  k = 10
+  k = numFolds
 
   # number of repeats
   numRuns = 10
