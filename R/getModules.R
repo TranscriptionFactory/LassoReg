@@ -15,7 +15,7 @@ processFile = function(cluster_input, df, fullModules = F, filepath = NULL) {
       }
       genes = stringr::str_split(line, "\t|\n")[[1]]
 
-      allModules[length(allModules) + 1] = list(l = genes)
+      allModules[[length(allModules) + 1]] = list(l = genes)
       gcount = gcount + 1
     }
     close(con)
@@ -23,7 +23,7 @@ processFile = function(cluster_input, df, fullModules = F, filepath = NULL) {
   } else if (!is.null(cluster_input)) {
       # read through clusters dataframe
       for (i in 1:nrow(cluster_input)) {
-        allModules[length(allModules) + 1] = list( stringr::str_c(cluster_input[i, ]))
+        allModules[[length(allModules) + 1]] = list( stringr::str_c(cluster_input[i, ]))
       }
   } else {
       # somethings wrong
@@ -43,10 +43,10 @@ processFile = function(cluster_input, df, fullModules = F, filepath = NULL) {
     if ( length(genelist) >= 3) {
       if (fullModules) {
         # get all genes in the modules
-        results[length(results) + 1] = list(l = genes)
+        results[[length(results) + 1]] = list(l = genes)
       } else {
         # get only genes in data from module
-        results[length(results) + 1] = list(l = genelist)
+        results[[length(results) + 1]] = list(l = genelist)
       }
     }
   }
