@@ -66,7 +66,7 @@ getModules = function(dfs, cluster_filepath) {
 
   M <- matrix(0, ncol=nrow(data), nrow = length(modulesInData))
   i <- 1
-  Y = data$Group
+  Y = data[, 1]
   moduleNames = list()
   for (i in 1:length(tempModules)) {
 
