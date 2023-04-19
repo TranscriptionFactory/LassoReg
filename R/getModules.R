@@ -33,10 +33,12 @@ processFile = function(cluster_input, df, fullModules = F, filepath = NULL) {
   # iterate through all modules and create the modules based on our tolerance
 
   for (i in 1:length(allModules)) {
-    genes = allModules[[i]]
+    genes = unlist(allModules[[i]])
+
+    genes = genes[which(genes != "")]
     genelist = c()
     for (g in genes) {
-      if ( any(g %in% names(df[, -1]))) {
+      if (g %in% names(df[, -1])) {
         genelist = c(genelist, g)
       }
     }
