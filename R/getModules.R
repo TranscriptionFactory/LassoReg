@@ -72,7 +72,7 @@ getModules = function(dfs, cluster_filepath) {
   moduleNames = list()
   for (i in 1:length(tempModules)) {
 
-    module <- modulesInData[[i]]
+    module <- unlist(modulesInData[[i]])
     # if(unique(module[module != ""]))
     module <- unique(module[module != ""])
 
