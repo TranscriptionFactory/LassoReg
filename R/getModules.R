@@ -80,7 +80,7 @@ getModules = function(dfs, cluster_filepath) {
     moduleNames[[length(moduleNames) + 1]] = list(module)
 
     subDF <- cbind.data.frame(Y, subDF)
-
+    names(subDF)[1] = "Y"
 
     grp_means = matrix(0, nrow = length(unique(Y)), ncol = ncol(subDF))
     grp_sds = matrix(0, nrow = length(unique(Y)), ncol = ncol(subDF))
