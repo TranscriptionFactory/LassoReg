@@ -36,7 +36,7 @@ processFile = function(cluster_input, df, fullModules = F, filepath = NULL) {
     genes = allModules[[i]]
     genelist = c()
     for (g in genes) {
-      if (g %in% names(df[, -1])) {
+      if ( any(g %in% names(df[, -1]))) {
         genelist = c(genelist, g)
       }
     }
