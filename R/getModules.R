@@ -76,8 +76,8 @@ getModules = function(dfs, cluster_filepath) {
     # if(unique(module[module != ""]))
     module <- unique(module[module != ""])
 
-    subDF <- data %>% dplyr::select(all_of(module))
-    moduleNames[[length(moduleNames) + 1]] = module
+    subDF <- data %>% dplyr::select(module)
+    moduleNames[[length(moduleNames) + 1]] = list(module)
 
     subDF <- cbind.data.frame(Y, subDF)
 
