@@ -175,7 +175,8 @@ getNetworkNames = function(network_results) {
   }
 
   for (v in 1:length(network_results$vars)) {
-    vs = network_results$vars[[v]]$chosen_vars
+    vs = network_results$vars[["vars"]][[v]][["chosen_vars_freq"]]
+    vs = vs[which(vs$Freq > 5), ]$vars_across_folds
     modnames[[v]] = lapply(vs, function(x) mod_defs[[as.numeric(x)]])
   }
   return(modnames)
