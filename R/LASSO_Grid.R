@@ -156,7 +156,7 @@ LASSO_Grid = function(fulldata, lambdaValues = c(1.0), numFolds = 10) {
 
             # store yhat in appropriate location depending on mode
             if (n_run == 1) {
-              gridValues[[entry]]$chosenFeats = variables[[entry]]
+              gridValues[[entry]]$chosenFeats = c(variables[[entry]], gridValues[[entry]]$chosenFeats)
 
               #svm and rf
               gridValues[[entry]]$append_svm = c(gridValues[[entry]]$append_svm, yhat.SVM)
@@ -166,7 +166,7 @@ LASSO_Grid = function(fulldata, lambdaValues = c(1.0), numFolds = 10) {
               gridValues[[entry]]$rf_models = list(fit = RFfit, variables = variables[[entry]])
 
             } else {
-              gridValues[[entry]]$chosenFeat_perm = variables[[entry]]
+              gridValues[[entry]]$chosenFeat_perm = c(ridValues[[entry]]$chosenFeat_perm, variables[[entry]])
 
               gridValues[[entry]]$append_svm_permute = c(gridValues[[entry]]$append_svm_permute, yhat.SVM)
 
