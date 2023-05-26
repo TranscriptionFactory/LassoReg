@@ -166,7 +166,7 @@ LASSO_Grid = function(fulldata, lambdaValues = c(1.0), numFolds = 10, numRuns = 
               gridValues[[entry]]$rf_models = list(fit = RFfit, variables = variables[[entry]])
 
             } else {
-              gridValues[[entry]]$chosenFeat_perm = c(ridValues[[entry]]$chosenFeat_perm, variables[[entry]])
+              gridValues[[entry]]$chosenFeat_perm = c(variables[[entry]], gridValues[[entry]]$chosenFeat_perm)
 
               gridValues[[entry]]$append_svm_permute = c(gridValues[[entry]]$append_svm_permute, yhat.SVM)
 
