@@ -2,7 +2,7 @@
 digestResults = function(results) {
 
 
-  auc_matrix = data.frame("alpha",
+  auc_matrix = data.frame("lambda",
                           "svm",
                           "svm_permute",
                           "svm_cfm",
@@ -17,7 +17,7 @@ digestResults = function(results) {
     for (sublist in 1:length(results[[entry]])) {
       currentList = results[[entry]][[sublist]]
       #
-      auc_matrix[nrow(auc_matrix) + 1, ] = as.double(c(currentList$alpha,
+      auc_matrix[nrow(auc_matrix) + 1, ] = as.double(c(currentList$lambda,
                                                        format(currentList$svm$auc_model, digits = 3),
                                                        format(currentList$svm$auc_model_permute, digits = 3),
                                                        currentList$svm$cfm$overall[['Accuracy']],
@@ -130,7 +130,7 @@ plotResults = function(resultsdf, outpath = "") {
                                            names_to = "auc_method", values_to = "auc"),
                             x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
                             order = c("svm", "svm_permute", "rf", "rf_permute"),
-                            facet.by = "alpha", scales = "free", repel = T,
+                            facet.by = "lambda", scales = "free", repel = T,
                             add = "point", add.params = list(size = 2), font.label = list(size = 20),
                             title = "SVM or Random Forest Classification (AUC)") +
     ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
@@ -142,7 +142,7 @@ plotResults = function(resultsdf, outpath = "") {
                                            names_to = "auc_method", values_to = "auc"),
                             x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
                             order = c("svm_cfm", "svm_cfm_permute", "rf_cfm", "rf_cfm_permute"),
-                            facet.by = "alpha", scales = "free", repel = T, xlab = "Method",
+                            facet.by = "lambda", scales = "free", repel = T, xlab = "Method",
                             ylab = "Accuracy (Confusion matrix)",
                             add = "point", add.params = list(size = 2),
                             title = "SVM or Random Forest Classification (Confusion Matrix)") +
@@ -183,4 +183,4 @@ getNetworkNames = function(network_results) {
   }
   return(modnames)
 }
-                           
+
