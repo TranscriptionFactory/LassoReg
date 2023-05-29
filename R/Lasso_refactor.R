@@ -22,12 +22,9 @@ calculateAUC = function(trueY, permutedY,
 
   }
 
-  trueY = factor(trueY)
-  permutedY = factor(permutedY)
+  cfm = caret::confusionMatrix(as.factor(append_model), trueY)
 
-  cfm = caret::confusionMatrix(factor(round(append_model)), trueY)
-
-  cfm_permute = caret::confusionMatrix(factor(round(append_model_permute)), permutedY)
+  cfm_permute = caret::confusionMatrix(as.factor(append_model_permute), permutedY)
 
   return(list(auc_model = auc_model, auc_model_permute = auc_model_permute,
               cfm = cfm, cfm_permute = cfm_permute))
@@ -144,7 +141,7 @@ LASSO_Grid = function(fulldata, lambdaValues = c(1.0), numFolds = 10, numRuns = 
           colnames(newTrain)[1] <- "Y"
           colnames(newTest)[1] <- "Y"
 
-          lasso_run_results$Y = newTest$Y
+          lasso_run_results$Y = as.factor(newTest$Y)
 
           newTrain = droplevels(newTrain)
           newTest = droplevels(newTest)
@@ -218,14 +215,14 @@ LASSO_Grid = function(fulldata, lambdaValues = c(1.0), numFolds = 10, numRuns = 
 
       # we evaluate both models (model trained on true Y and model trained on permuted Y)
       # against the true Y
-      gridValues[[entry]]$svm = LassoReg::calculateAUC(gridValues[[entry]]$trueY,
-                                             gridValues[[entry]]$trueY,
+      gridValues[[entry]]$svm = calculateAUC(gridValues[[entry]]$trueY,
+                                             gridValues[[entry]]$permutedY,
                                              gridValues[[entry]]$append_svm,
                                              gridValues[[entry]]$append_svm_permute,
                                              unique_levels)
 
-      gridValues[[entry]]$rf = LassoReg::calculateAUC(gridValues[[entry]]$trueY,
-                                            gridValues[[entry]]$trueY,
+      gridValues[[entry]]$rf = calculateAUC(gridValues[[entry]]$trueY,
+                                            gridValues[[entry]]$permutedY,
                                             gridValues[[entry]]$append_RF,
                                             gridValues[[entry]]$append_RF_permute,
                                             unique_levels)
