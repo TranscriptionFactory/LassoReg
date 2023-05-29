@@ -153,7 +153,7 @@ plotResults = function(resultsdf, outpath = "") {
                                  tidyr::pivot_longer(cols = c("svm_cfm", "rf_cfm",
                                                               "svm_cfm_permute", "rf_cfm_permute"),
                                                      names_to = "auc_method", values_to = "auc") %>%
-                                 recode(auc_method, svm_cfm = "svm", svm_cfm_permute = "svm_permute",
+                                 dplyr::recode(auc_method, svm_cfm = "svm", svm_cfm_permute = "svm_permute",
                                         rf_cfm = "rf", rf_cfm_permute = "rf_permute"),
                                x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
                                order = c("svm", "svm_permute", "rf", "rf_permute"),
