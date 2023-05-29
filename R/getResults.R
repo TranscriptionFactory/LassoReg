@@ -155,9 +155,9 @@ plotResults = function(resultsdf, outpath = "") {
         ggplot2::ggsave(paste0(outpath, "/", p , "_plot_plsr_lasso.png"), plsr_plotlist[[p]], height = 7, width = 7)
     }
 
-    ggplot2::ggsave(paste0(outpath, "/plot_auc_lasso.png"), plot = plot_auc, width = length(lambdas)*4.5, height = 6 * ceiling(length(lambdas)/3))
+    ggplot2::ggsave(paste0(outpath, "/plot_auc_lasso.png"), plot = plot_auc, width = length(lambdas)*5.0, height = 6 * ceiling(length(lambdas)/3))
 
-    ggplot2::ggsave(paste0(outpath, "/plot_cfm_lasso.png"), plot = plot_cfm, width = length(lambdas)*4.5, height = 6 * ceiling(length(lambdas)/3))
+    ggplot2::ggsave(paste0(outpath, "/plot_cfm_lasso.png"), plot = plot_cfm, width = length(lambdas)*5.5, height = 6 * ceiling(length(lambdas)/3))
   } else {
     return(list("plsr_plot" = plsr_plotlist, "auc_plot" = plot_auc, "cfm_plot" = plot_cfm))
   }
