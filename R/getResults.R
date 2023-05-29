@@ -135,34 +135,18 @@ plotResults = function(resultsdf, outpath = "") {
                             title = "SVM or Random Forest Classification (AUC)") +
     ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
                                                              c("rf", "rf_permute")))
-#
-#   plot_cfm = ggpubr::ggboxplot(auc_matrix %>%
-#                              tidyr::pivot_longer(cols = c("svm_cfm", "rf_cfm",
-#                                                     "svm_cfm_permute", "rf_cfm_permute"),
-#                                            names_to = "auc_method", values_to = "auc"),
-#                             x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
-#                             order = c("svm_cfm", "svm_cfm_permute", "rf_cfm", "rf_cfm_permute"),
-#                             facet.by = "lambda", scales = "free", repel = T, xlab = "Method",
-#                             ylab = "Accuracy (Confusion matrix)",
-#                             add = "point", add.params = list(size = 2),
-#                             title = "SVM or Random Forest Classification (Confusion Matrix)") +
-#     ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm_cfm", "svm_cfm_permute"),
-#                                                              c("rf_cfm", "rf_cfm_permute")))
-#
   plot_cfm = ggpubr::ggboxplot(auc_matrix %>%
-                                 tidyr::pivot_longer(cols = c("svm_cfm", "rf_cfm",
-                                                              "svm_cfm_permute", "rf_cfm_permute"),
-                                                     names_to = "auc_method", values_to = "auc") %>%
-                                 dplyr::recode(auc_method, svm_cfm = "svm", svm_cfm_permute = "svm_permute",
-                                        rf_cfm = "rf", rf_cfm_permute = "rf_permute"),
-                               x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
-                               order = c("svm", "svm_permute", "rf", "rf_permute"),
-                               facet.by = "lambda", scales = "free", repel = T, xlab = "Method",
-                               ylab = "Accuracy (Confusion matrix)",
-                               add = "point", add.params = list(size = 2),
-                               title = "SVM or Random Forest Classification (Confusion Matrix)") +
-    ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm", "svm_permute"),
-                                                                     c("rf", "rf_permute")))
+                             tidyr::pivot_longer(cols = c("svm_cfm", "rf_cfm",
+                                                    "svm_cfm_permute", "rf_cfm_permute"),
+                                           names_to = "auc_method", values_to = "auc"),
+                            x = "auc_method", y = "auc", fill = "auc_method", palette = "npg",
+                            order = c("svm_cfm", "svm_cfm_permute", "rf_cfm", "rf_cfm_permute"),
+                            facet.by = "lambda", scales = "free", repel = T, xlab = "Method",
+                            ylab = "Accuracy (Confusion matrix)",
+                            add = "point", add.params = list(size = 2),
+                            title = "SVM or Random Forest Classification (Confusion Matrix)") +
+    ggpubr::stat_compare_means(method = "t.test", comparisons = list(c("svm_cfm", "svm_cfm_permute"),
+                                                             c("rf_cfm", "rf_cfm_permute")))
 
   if (outpath != "") {
 
